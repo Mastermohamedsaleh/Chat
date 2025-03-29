@@ -48,7 +48,12 @@ class ChatController extends Controller
     }
 
 
-
+    public function typing()
+    {
+        // Fire the typing event
+        broadcast(new UserTyping(Auth::id()))->toOthers();
+        return response()->json(['status' => 'typing broadcasted!']);
+    }
 
 
 

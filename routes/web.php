@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\GroupChatController;
 
 Route::get('/', fn() => redirect()->route('login'));
 
@@ -17,4 +18,5 @@ Route::middleware('auth')->group(function (){
     Route::post('/chat/typing', [ChatController::class, 'typing']);
     Route::post('/online', [ChatController::class, 'setOnline']);
     Route::post('/offline', [ChatController::class, 'setOffline']);
+    Route::post('/creategroup', [GroupChatController::class, 'creategroup']);
 });

@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function (){
             let chatBox = document.getElementById('chat-box');
             let messageForm = document.getElementById('message-form');
             let messageInput = document.getElementById('message-input');
+            let typingIndicator = document.getElementById('typing-indicator');
         
 
              // subscribe to chat channel
@@ -78,6 +79,26 @@ document.addEventListener('DOMContentLoaded', function (){
 
             });
 
+
+              // subscribe to typing channel
+              window.Echo.private('typing.' + receiverId)
+              .listen('UserTyping', (e) => {
+                  if(e.typerId === receiverId){
+                      typingIndicator.style.display = 'block';
+                      setTimeout(() => typingIndicator.style.display = 'none', 3000);
+                  }
+       
+              });
+
+            let typingTimeOut;
+            messageInput.addEventListener('input', function () {
+                clearTimeout(typingTimeOut);
+                fetch(`/chat/typing`, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                });
+                typingTimeOut = setTimeout(() => {typingIndicator.style.display = 'none'}, 3000);
+            });
 
 
 
