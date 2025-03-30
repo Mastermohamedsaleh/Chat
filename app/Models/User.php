@@ -52,5 +52,9 @@ class User extends Authenticatable
     {
         return cache()->has('user-is-online-' . $this->id);
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_members');
+    }
 
 }

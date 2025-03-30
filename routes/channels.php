@@ -8,3 +8,7 @@ Broadcast::channel('chat.{userId}', function ($user, $userId) {
 Broadcast::channel('typing.{userId}', function ($user, $userId) {
     return true;
 });
+
+Broadcast::channel('group.{groupId}', function ($user, $groupId) {
+    return true; // أي شخص يمكنه الاستماع للقناة
+});

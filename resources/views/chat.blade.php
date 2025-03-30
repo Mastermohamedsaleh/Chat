@@ -8,7 +8,58 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-    <div class="container mt-5">
+
+
+<style>
+
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .chat-container {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+.message-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+
+#message-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background: #f0f0f0;
+  outline: none;
+}
+
+.send-button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  background: #4a90e2;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.send-button:hover {
+  background: #357ac9;
+}
+</style>
+
+
+    <div class="chat-container mt-5">
         <h1>Chat with {{ $receiver->name }}</h1>
         <div id="chat-box" class="border p-3" style="height: 400px; overflow-y: scroll;">
             @foreach ($messages as $message)

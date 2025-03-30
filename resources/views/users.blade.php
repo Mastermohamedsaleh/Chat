@@ -9,6 +9,76 @@
 </head>
 <body>
     
+
+<style>
+        /* إزالة الـ border وإضافة استايل أنيق */
+        body {
+    background-color: #f0f2f5;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #075e54;
+}
+
+.btn-primary {
+    background-color: #25d366;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #1ebea5;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-list li:last-child {
+    border-bottom: none;
+}
+
+.user-name {
+    color: #075e54;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.user-name:hover {
+    text-decoration: underline;
+}
+
+.status {
+    background: gray;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+    </style>
+    
 <div class="container mt-5">
    
 <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -37,10 +107,12 @@
            
       @foreach ($users as $user)
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <input  class="text-primary" value="{{ $user->id }}" name="namemembers"  placeholder="{{ $user->name }}" >
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <input type="text" style="border: none;   outline: none;" value="{{ $user->name }}" readonly class="custom-input">
+                <input type="checkbox" name="user_ids[]" value="{{ $user->id }}">
                 </li>
             @endforeach
+
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -64,6 +136,10 @@
                     </span> 
                 </li>
             @endforeach
+
+            @foreach($groups as $group)
+            <li class="list-group-item d-flex justify-content-between align-items-center"> <a href="{{ url('/group/'.$group->id) }}">{{ $group->name }}</a></li>
+        @endforeach
         </ul>
     </div>
 </body>
