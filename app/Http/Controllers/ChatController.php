@@ -9,51 +9,43 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Interfaces\ChatRepositoryInterface;
+
 
 class ChatController extends Controller
 {
+
+
+    private $Chat;
+
+    public function __construct(ChatRepositoryInterface $Chat)
+    {
+       return $this->Chat = $Chat;
+        
+    }
+
+
+
     public function index()
     {
-        $users = User::where('id', '!=', Auth::id())->get();
-        $groups = auth()->user()->groups; 
-        return view('users', compact('users','groups'));
+      return  $this->Chat->index();
     }
 
 
     public function chat($receiverId)
     {
-        $receiver = User::find($receiverId);
-
-        $messages = Message::where(function ($query) use ($receiverId){
-            $query->where('sender_id', Auth::id())->where('receiver_id', $receiverId);
-        })->orWhere(function ($query) use ($receiverId) {
-            $query->where('sender_id', $receiverId)->where('receiver_id', Auth::id());
-        })->get();
-
-        return view('chat', compact('receiver', 'messages'));
+    return   $this->Chat->chat($receiverId); 
     }
 
     public function sendMessage(Request $request, $receiverId)
     {
-        // save message to DB
-        $message = Message::create([
-            'sender_id'     => Auth::id(),
-            'receiver_id'   => $receiverId,
-            'message'       => $request['message']
-        ]);
-        
-        // Fire the message event
-        broadcast(new MessageSent($message))->toOthers();
-        
-        return response()->json(['status' => 'Message sent!']);
+      return $this->Chat->sendMessage($request, $receiverId); 
     }
 
 
     public function typing()
     {
-        // Fire the typing event
-        broadcast(new UserTyping(Auth::id()))->toOthers();
-        return response()->json(['status' => 'typing broadcasted!']);
+      return $this->Chat->typing();
     }
 
 

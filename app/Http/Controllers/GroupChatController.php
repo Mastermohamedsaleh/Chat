@@ -29,23 +29,37 @@ class GroupChatController extends Controller
 
     public function create(Request $request)
     {
+
+        try {
+
         $group = new Group();
         $group->name = $request->name;
         $group->save();
         $id_group = $group->id;
 
-        $userIds = $request->input('user_ids'); // استلام جميع الـ ID's المختارة
-
-        if ($userIds) {
-            foreach ($userIds as $id) {
+        $userIds = $request->input('user_ids', []); // تأكد من أنها مصفوفة
+        $id1 = is_array($userIds) ? $userIds : [$userIds]; 
+        $currentUserId = auth()->user()->id;
+        $id2 = [$currentUserId]; 
+        
+        $allids = array_merge($id1, $id2);
+        
+        if (!empty($allids)) {
+            foreach ($allids as $id) {
+                $role = ($id == $currentUserId) ? 'admin' : 'member'; // تحديد الدور لكل مستخدم
+        
                 DB::table('group_members')->insert([
-                     'user_id' => $id,
-                     'group_id'=>$id_group
+                    'user_id'  => (int) $id, 
+                    'group_id' => $id_group,
+                    'role'     => $role
                 ]);
             }
         }
     
         return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
+    } catch (\Exception $e) {
+        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+    }
     }
 
 
