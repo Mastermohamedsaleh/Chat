@@ -3,10 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GroupChatController;
+use App\Jobs\Proccessimage;
+
+
+
 
 // Route::get('/', fn() => redirect()->route('login'));
 
 Auth::routes();
+
+
+
+// Route::get('/',function(){
+
+//     Proccessimage::dispatch();
+ 
+
+// });
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -22,3 +36,7 @@ Route::middleware('auth')->group(function (){
     Route::get('/group/{id}', [GroupChatController::class, 'index'])->middleware('auth');
     Route::post('/chat/{groupId}/sendtogroup', [GroupChatController::class, 'sendMessage'])->middleware('auth');
 });
+
+
+
+
